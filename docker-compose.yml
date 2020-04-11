@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  db:
+    image: mdillon/postgis:11-alpine
+    environment:
+        POSTGRES_USER: geoserver
+        POSTGRES_PASSWORD: supersecret
+        PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - type: volume
+        source: postgres_data
+        target: /var/lib/postgresql/data/pgdata
+  geoserver:
+    image: davidedelerma/geoserver:0.1
+    volumes:
+      - type: volume
+        source: geoserver_data
+        target: /geoserver_data/data
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+    geoserver_data:
+    postgres_data:
