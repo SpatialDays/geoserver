@@ -25,3 +25,4 @@ services:
 volumes:
     geoserver_data:
     postgres_data:
+    

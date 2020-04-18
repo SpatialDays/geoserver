@@ -19,3 +19,4 @@
 ## Plugins installed
 
 * backup/restore
+* Geogig
