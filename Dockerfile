@@ -36,14 +36,6 @@ RUN mkdir netcdf-plugin  && cd netcdf-plugin  && \
 RUN cp netcdf-plugin/* webapps/geoserver/WEB-INF/lib/ && \
     rm -rf netcdf-plugin
 
-ARG GEOSERVER_VERSION_GEOGIG=2.14
+RUN mkdir /geoserver_netcdf_indexes && chmod -R 777 /geoserver_netcdf_indexes
 
-RUN mkdir geogig-plugin && cd geogig-plugin && \
-    wget -c https://build.geoserver.org/geoserver/${GEOSERVER_VERSION_GEOGIG}.x/community-latest/geoserver-${GEOSERVER_VERSION_GEOGIG}-SNAPSHOT-geogig-plugin.zip && \
-    unzip geoserver-${GEOSERVER_VERSION_GEOGIG}-SNAPSHOT-geogig-plugin.zip && \
-    rm geoserver-${GEOSERVER_VERSION_GEOGIG}-SNAPSHOT-geogig-plugin.zip
-
-RUN cp geogig-plugin/* webapps/geoserver/WEB-INF/lib/ && \
-    rm -rf geoserver-backup-plugin
-
-ENV JAVA_OPTS="-Djava.awt.headless=true -XX:MaxPermSize=512m -XX:PermSize=256m -Xms512m -Xmx2048m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:ParallelGCThreads=4 -Dfile.encoding=UTF8 -Duser.timezone=GMT -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true"
+ENV JAVA_OPTS="-DNETCDF_DATA_DIR=/geoserver_netcdf_indexes -Djava.awt.headless=true -XX:MaxPermSize=512m -XX:PermSize=256m -Xms512m -Xmx2048m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:ParallelGCThreads=4 -Dfile.encoding=UTF8 -Duser.timezone=GMT -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true"
