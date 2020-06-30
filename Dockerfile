@@ -3,8 +3,8 @@ FROM tomcat:9-jre8
 #
 # Set GeoServer version and data directory
 #
-ARG GEOSERVER_VERSION=2.16
-ARG PATCH_NUMBER=2
+ARG GEOSERVER_VERSION=2.17
+ARG PATCH_NUMBER=1
 ENV GEOSERVER_DATA_DIR="/geoserver_data/data"
 
 #
@@ -21,7 +21,7 @@ RUN wget --no-check-certificate --progress=bar:force:noscroll \
     && mkdir -p $GEOSERVER_DATA_DIR
 
 RUN mkdir geoserver-backup-plugin && cd geoserver-backup-plugin && \
-    wget -c https://build.geoserver.org/geoserver/${GEOSERVER_VERSION}.x/community-latest/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-backup-restore-plugin.zip && \
+    wget -c https://build.geoserver.org/geoserver/${GEOSERVER_VERSION}.x/community-2020-06-24/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-backup-restore-plugin.zip && \
     unzip geoserver-${GEOSERVER_VERSION}-SNAPSHOT-backup-restore-plugin.zip && \
     rm geoserver-${GEOSERVER_VERSION}-SNAPSHOT-backup-restore-plugin.zip
 
@@ -29,7 +29,7 @@ RUN cp geoserver-backup-plugin/* webapps/geoserver/WEB-INF/lib/ && \
     rm -rf geoserver-backup-plugin
 
 RUN mkdir netcdf-plugin  && cd netcdf-plugin  && \
-    wget -c https://build.geoserver.org/geoserver/${GEOSERVER_VERSION}.x/ext-2020-04-17/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-netcdf-plugin.zip  && \
+    wget -c https://build.geoserver.org/geoserver/${GEOSERVER_VERSION}.x/ext-latest/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-netcdf-plugin.zip  && \
     unzip geoserver-${GEOSERVER_VERSION}-SNAPSHOT-netcdf-plugin.zip  && \
     rm geoserver-${GEOSERVER_VERSION}-SNAPSHOT-netcdf-plugin.zip
 
