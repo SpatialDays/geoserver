@@ -3,35 +3,43 @@ FROM tomcat:9-jre8
 #
 # Set GeoServer version and data directory
 #
-ARG GEOSERVER_VERSION=2.17
-ARG PATCH_NUMBER=1
+ARG GEOSERVER_VERSION=2.22
+ARG PATCH_NUMBER=x
 ENV GEOSERVER_DATA_DIR="/geoserver_data/data"
 
 #
 # Download and install GeoServer
 #
+
+RUN apt-get update -y
+RUN apt-get install unzip -y
+RUN apt-get clean
+RUN rm -rf /var/cache/apt/lists
+
+
 RUN wget --no-check-certificate --progress=bar:force:noscroll \
-    https://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}.${PATCH_NUMBER}/geoserver-${GEOSERVER_VERSION}.${PATCH_NUMBER}-war.zip && \
-    unzip -q geoserver-${GEOSERVER_VERSION}.${PATCH_NUMBER}-war.zip \
+    # https://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}.${PATCH_NUMBER}/geoserver-${GEOSERVER_VERSION}.${PATCH_NUMBER}-war.zip && \
+    https://build.geoserver.org/geoserver/2.22.x/geoserver-2.22.x-2023-02-21-war.zip && \
+    /usr/bin/unzip -q geoserver-2.22.x-2023-02-21-war.zip \
     && mv geoserver.war webapps/ \
-    && rm geoserver-${GEOSERVER_VERSION}.${PATCH_NUMBER}-war.zip \
+    && rm geoserver-2.22.x-2023-02-21-war.zip \
     && cd webapps \
     && unzip -q geoserver.war -d geoserver \
     && rm geoserver.war \
     && mkdir -p $GEOSERVER_DATA_DIR
 
-RUN mkdir geoserver-backup-plugin && cd geoserver-backup-plugin && \
-    wget -c https://build.geoserver.org/geoserver/${GEOSERVER_VERSION}.x/community-2020-06-24/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-backup-restore-plugin.zip && \
-    unzip geoserver-${GEOSERVER_VERSION}-SNAPSHOT-backup-restore-plugin.zip && \
-    rm geoserver-${GEOSERVER_VERSION}-SNAPSHOT-backup-restore-plugin.zip
+# RUN mkdir geoserver-backup-plugin && cd geoserver-backup-plugin && \
+#     wget  \\ && 
+#     unzip geoserver-2.23-SNAPSHOT-backup-restore-plugin.zip && \
+#     rm geoserver-2.23-SNAPSHOT-backup-restore-plugin.zip
 
-RUN cp geoserver-backup-plugin/* webapps/geoserver/WEB-INF/lib/ && \
-    rm -rf geoserver-backup-plugin
+# RUN cp geoserver-backup-plugin/* webapps/geoserver/WEB-INF/lib/ && \
+#     rm -rf geoserver-backup-plugin
 
 RUN mkdir netcdf-plugin  && cd netcdf-plugin  && \
-    wget -c https://build.geoserver.org/geoserver/${GEOSERVER_VERSION}.x/ext-latest/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-netcdf-plugin.zip  && \
-    unzip geoserver-${GEOSERVER_VERSION}-SNAPSHOT-netcdf-plugin.zip  && \
-    rm geoserver-${GEOSERVER_VERSION}-SNAPSHOT-netcdf-plugin.zip
+    wget --no-check-certificate --progress=bar:force:noscroll  -c https://build.geoserver.org/geoserver/2.22.x/ext-latest/geoserver-2.22-SNAPSHOT-netcdf-plugin.zip && \
+    /usr/bin/unzip geoserver-2.22-SNAPSHOT-netcdf-plugin.zip  && \
+    rm geoserver-2.22-SNAPSHOT-netcdf-plugin.zip
 
 RUN cp netcdf-plugin/* webapps/geoserver/WEB-INF/lib/ && \
     rm -rf netcdf-plugin
