@@ -19,8 +19,8 @@ RUN rm -rf /var/cache/apt/lists
 
 RUN wget --no-check-certificate --progress=bar:force:noscroll \
     # https://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}.${PATCH_NUMBER}/geoserver-${GEOSERVER_VERSION}.${PATCH_NUMBER}-war.zip && \
-    https://build.geoserver.org/geoserver/2.22.x/geoserver-2.22.x-2023-02-21-war.zip && \
-    /usr/bin/unzip -q geoserver-2.22.x-2023-02-21-war.zip \
+    https://build.geoserver.org/geoserver/2.22.x/geoserver-2.22.x-latest-war.zip \
+    && /usr/bin/unzip -q geoserver-2.22.x-2023-02-21-war.zip \
     && mv geoserver.war webapps/ \
     && rm geoserver-2.22.x-2023-02-21-war.zip \
     && cd webapps \
