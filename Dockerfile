@@ -22,7 +22,7 @@ RUN wget --no-check-certificate --progress=bar:force:noscroll \
     https://build.geoserver.org/geoserver/2.22.x/geoserver-2.22.x-latest-war.zip \
     && /usr/bin/unzip -q geoserver-2.22.x-latest-war.zip \
     && mv geoserver.war webapps/ \
-    && rm geoserver-2.22.x-2023-02-21-war.zip \
+    && rm geoserver-2.22.x-latest-war.zip \
     && cd webapps \
     && unzip -q geoserver.war -d geoserver \
     && rm geoserver.war \
