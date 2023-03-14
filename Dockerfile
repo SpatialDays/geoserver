@@ -1,5 +1,5 @@
-FROM tomcat:9-jre8
-
+#FROM tomcat:9-jre8
+FROM  kartoza/geoserver:2.22.0
 #
 # Set GeoServer version and data directory
 #
@@ -17,23 +17,23 @@ RUN apt-get clean
 RUN rm -rf /var/cache/apt/lists
 
 
-RUN wget --no-check-certificate --progress=bar:force:noscroll \
-    # https://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}.${PATCH_NUMBER}/geoserver-${GEOSERVER_VERSION}.${PATCH_NUMBER}-war.zip && \
-    https://build.geoserver.org/geoserver/2.22.x/geoserver-2.22.x-latest-war.zip \
-    && /usr/bin/unzip -q geoserver-2.22.x-latest-war.zip \
-    && mv geoserver.war webapps/ \
-    && rm geoserver-2.22.x-latest-war.zip \
-    && cd webapps \
-    && unzip -q geoserver.war -d geoserver \
-    && rm geoserver.war \
-    && mkdir -p $GEOSERVER_DATA_DIR
+# RUN wget --no-check-certificate --progress=bar:force:noscroll \
+#     # https://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}.${PATCH_NUMBER}/geoserver-${GEOSERVER_VERSION}.${PATCH_NUMBER}-war.zip && \
+#     https://build.geoserver.org/geoserver/2.22.x/geoserver-2.22.x-latest-war.zip \
+#     && /usr/bin/unzip -q geoserver-2.22.x-latest-war.zip \
+#     && mv geoserver.war webapps/ \
+#     && rm geoserver-2.22.x-latest-war.zip \
+#     && cd webapps \
+#     && unzip -q geoserver.war -d geoserver \
+#     && rm geoserver.war \
+#     && mkdir -p $GEOSERVER_DATA_DIR
 
 RUN mkdir geoserver-backup-plugin && cd geoserver-backup-plugin && \
     wget  https://build.geoserver.org/geoserver/2.22.x/community-latest/geoserver-2.22-SNAPSHOT-backup-restore-plugin.zip && \
     /usr/bin/unzip geoserver-2.22-SNAPSHOT-backup-restore-plugin.zip  && \
     rm geoserver-2.22-SNAPSHOT-backup-restore-plugin.zip 
 
-RUN cp geoserver-backup-plugin/* webapps/geoserver/WEB-INF/lib/ && \
+RUN cp geoserver-backup-plugin/* /usr/local/tomcat/webapps/geoserver/WEB-INF/lib && \
     rm -rf geoserver-backup-plugin
 
 RUN mkdir netcdf-plugin  && cd netcdf-plugin  && \
@@ -41,9 +41,9 @@ RUN mkdir netcdf-plugin  && cd netcdf-plugin  && \
     /usr/bin/unzip geoserver-2.22-SNAPSHOT-netcdf-plugin.zip  && \
     rm geoserver-2.22-SNAPSHOT-netcdf-plugin.zip
 
-RUN cp netcdf-plugin/* webapps/geoserver/WEB-INF/lib/ && \
+RUN cp netcdf-plugin/* /usr/local/tomcat/webapps/geoserver/WEB-INF/lib/ && \
     rm -rf netcdf-plugin
 
 RUN mkdir /geoserver_netcdf_indexes && chmod -R 777 /geoserver_netcdf_indexes
 
-ENV JAVA_OPTS="-DNETCDF_DATA_DIR=/geoserver_netcdf_indexes -Djava.awt.headless=true -XX:MaxPermSize=512m -XX:PermSize=256m -Xms512m -Xmx2048m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:ParallelGCThreads=4 -Dfile.encoding=UTF8 -Duser.timezone=GMT -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true"
+# ENV JAVA_OPTS="-DNETCDF_DATA_DIR=/geoserver_netcdf_indexes -Djava.awt.headless=true -XX:MaxPermSize=512m -XX:PermSize=256m -Xms512m -Xmx2048m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:ParallelGCThreads=4 -Dfile.encoding=UTF8 -Duser.timezone=GMT -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true"
