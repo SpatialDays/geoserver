@@ -11,10 +11,10 @@ ENV GEOSERVER_DATA_DIR="/geoserver_data/data"
 # Download and install GeoServer
 #
 
-RUN apt-get update -y
-RUN apt-get install unzip -y
-RUN apt-get clean
-RUN rm -rf /var/cache/apt/lists
+# RUN apt-get update -y
+# RUN apt-get install unzip -y
+# RUN apt-get clean
+# RUN rm -rf /var/cache/apt/lists
 
 
 # RUN wget --no-check-certificate --progress=bar:force:noscroll \
@@ -30,19 +30,15 @@ RUN rm -rf /var/cache/apt/lists
 
 RUN mkdir geoserver-backup-plugin && cd geoserver-backup-plugin && \
     wget  https://build.geoserver.org/geoserver/2.22.x/community-latest/geoserver-2.22-SNAPSHOT-backup-restore-plugin.zip && \
-    /usr/bin/unzip geoserver-2.22-SNAPSHOT-backup-restore-plugin.zip  && \
-    rm geoserver-2.22-SNAPSHOT-backup-restore-plugin.zip 
+    /usr/bin/unzip geoserver-2.22-SNAPSHOT-backup-restore-plugin.zip  
 
-RUN cp geoserver-backup-plugin/* /usr/local/tomcat/webapps/geoserver/WEB-INF/lib && \
-    rm -rf geoserver-backup-plugin
+RUN cp geoserver-backup-plugin/* /usr/local/tomcat/webapps/geoserver/WEB-INF/lib
 
 RUN mkdir netcdf-plugin  && cd netcdf-plugin  && \
     wget --no-check-certificate --progress=bar:force:noscroll  -c https://build.geoserver.org/geoserver/2.22.x/ext-latest/geoserver-2.22-SNAPSHOT-netcdf-plugin.zip && \
-    /usr/bin/unzip geoserver-2.22-SNAPSHOT-netcdf-plugin.zip  && \
-    rm geoserver-2.22-SNAPSHOT-netcdf-plugin.zip
+    /usr/bin/unzip geoserver-2.22-SNAPSHOT-netcdf-plugin.zip
 
-RUN cp netcdf-plugin/* /usr/local/tomcat/webapps/geoserver/WEB-INF/lib/ && \
-    rm -rf netcdf-plugin
+RUN cp netcdf-plugin/* /usr/local/tomcat/webapps/geoserver/WEB-INF/lib/
 
 RUN mkdir /geoserver_netcdf_indexes && chmod -R 777 /geoserver_netcdf_indexes
 
